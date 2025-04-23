@@ -65,8 +65,33 @@ const getSinglePackage = async (req, res) => {
     }
 }
 
+
+
+const updatePackage = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await prisma.package.update({
+            where: { id },
+            data: req.body
+        },);
+
+        res.status(200).json({
+            success: true,
+            message: "Package Update Successfull",
+            data
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
+
 module.exports = {
     createPackages,
     getAllPackages,
-    getSinglePackage
+    getSinglePackage,
+    updatePackage
 }
