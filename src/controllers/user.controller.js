@@ -11,36 +11,66 @@ const register = async (req, res) => {
             data: { name, email, role, password: hashed },
         });
 
+        const token = jwt.sign(
+            {
+                id: user.id,
+                email: user.email
+            }, process.env.JWT_SECRET, {
+            expiresIn: '1d',
+        }
+        )
+
         res.status(200).json({
             success: true,
             message: "User Register successfull",
-            data: user
+            data: token
         });
     } catch (err) {
         if (err.code === 'P2002') {
-            res.status(400).json({ error: 'User with this email already exists' });
+            res.status(400).json({
+                success: false,
+                error: 'User already exists'
+            });
         } else {
-            console.error('Registration error:', err);
+            res.status(500).json({
+                success: false,
+                error: 'There was a server side error'
+            });
         }
     }
 };
 
+
+
+
+
 const login = async (req, res) => {
     const { email, password } = req.body;
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    try {
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(401).json({ error: 'Invalid password' });
+        const valid = await bcrypt.compare(password, user.password);
+        if (!valid) return res.status(401).json({ error: 'Invalid password' });
 
-    const token = jwt.sign(
-        {
-            id: user.id,
-            email: user.email
-        }, process.env.JWT_SECRET, {
-        expiresIn: '1d',
-    });
-    res.json({ token });
+        const token = jwt.sign(
+            {
+                id: user.id,
+                email: user.email
+            }, process.env.JWT_SECRET, {
+            expiresIn: '1d',
+        });
+        res.status(200).json({
+            success: true,
+            message: "Login Successfull",
+            data: token
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'There was a server side error'
+        });
+    }
 };
 
 
