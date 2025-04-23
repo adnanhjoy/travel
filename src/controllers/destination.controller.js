@@ -65,8 +65,30 @@ const updateDestination = async (req, res) => {
 
 
 
+
+const deleteDestination = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const data = await prisma.destination.delete({ where: { id } });
+
+        res.status(200).json({
+            succes: true,
+            message: "Destination delete successfull",
+            data
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error",
+        });
+    }
+}
+
+
 module.exports = {
     createDestination,
     getAllDestination,
-    updateDestination
+    updateDestination,
+    deleteDestination
 }
