@@ -89,9 +89,28 @@ const updatePackage = async (req, res) => {
 }
 
 
+
+const deletePackage = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await prisma.package.delete({ where: { id } });
+        res.status(200).json({
+            success: true,
+            message: "Package Deleted Successfull",
+            data
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
 module.exports = {
     createPackages,
     getAllPackages,
     getSinglePackage,
-    updatePackage
+    updatePackage,
+    deletePackage
 }
