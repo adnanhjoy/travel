@@ -39,7 +39,34 @@ const getAllPackages = async (req, res) => {
 }
 
 
+
+
+const getSinglePackage = async (req, res) => {
+    const { id } = req.params
+    try {
+        const data = await prisma.package.findUnique({
+            where: { id },
+            include: {
+                destination: true
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Get package successfull",
+            data
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            succes: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
 module.exports = {
     createPackages,
-    getAllPackages
+    getAllPackages,
+    getSinglePackage
 }
