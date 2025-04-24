@@ -8,27 +8,30 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid())
+  id       String    @id @default(uuid())
   name     String
-  email    String   @unique
+  email    String    @unique
   password String
-  role     String   @default("customer")
+  role     String    @default("customer")
   bookings Booking[]
 }
 
-model Destination {
-  id       String   @id @default(uuid())
-  name     String
-  country  String
-  packages Package[]
+model Airport {
+  id          String    @id @default(uuid())
+  countryName String
+  countryCode String
+  airportName String
+  airportCode String
+  format      String
+  packages    Package[]
 }
 
 model Package {
-  id            String       @id @default(uuid())
+  id            String    @id @default(uuid())
   title         String
   price         Float
   description   String
-  destination   Destination  @relation(fields: [destinationId], references: [id])
+  destination   Airport   @relation(fields: [destinationId], references: [id])
   destinationId String
   bookings      Booking[]
 }

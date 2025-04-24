@@ -2,7 +2,7 @@ const prisma = require("../../prisma/client");
 
 const createAirport = async (req, res) => {
     try {
-        const data = await prisma.destination.create({ data: req.body })
+        const data = await prisma.airport.create({ data: req.body })
 
         res.status(200).json({
             succes: true,
@@ -21,7 +21,7 @@ const createAirport = async (req, res) => {
 
 const getAllAirport = async (req, res) => {
     try {
-        const data = await prisma.destination.findMany()
+        const data = await prisma.airport.findMany()
 
         res.status(200).json({
             succes: true,
@@ -44,7 +44,7 @@ const updateAirport = async (req, res) => {
         const { id } = req.params;
         const updateData = req.body;
 
-        const updatedDestination = await prisma.destination.update({
+        const updateAirport = await prisma.airport.update({
             where: { id },
             data: updateData,
         });
@@ -52,7 +52,7 @@ const updateAirport = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Airport updated successfully",
-            data: updatedDestination,
+            data: updateAirport,
         });
     } catch (error) {
         console.error(error);
@@ -69,7 +69,7 @@ const updateAirport = async (req, res) => {
 const deleteAirport = async (req, res) => {
     const { id } = req.params;
     try {
-        const data = await prisma.destination.delete({ where: { id } });
+        const data = await prisma.airport.delete({ where: { id } });
 
         res.status(200).json({
             succes: true,
