@@ -1,12 +1,12 @@
 const prisma = require("../../prisma/client");
 
-const createDestination = async (req, res) => {
+const createAirport = async (req, res) => {
     try {
         const data = await prisma.destination.create({ data: req.body })
 
         res.status(200).json({
             succes: true,
-            message: "Destination Create Successfull",
+            message: "Airport Create Successfull",
             data
         })
     } catch (error) {
@@ -19,13 +19,13 @@ const createDestination = async (req, res) => {
 }
 
 
-const getAllDestination = async (req, res) => {
+const getAllAirport = async (req, res) => {
     try {
         const data = await prisma.destination.findMany()
 
         res.status(200).json({
             succes: true,
-            message: "Destination Get Successfull",
+            message: "Airport Get Successfull",
             data
         })
     } catch (error) {
@@ -39,7 +39,7 @@ const getAllDestination = async (req, res) => {
 
 
 
-const updateDestination = async (req, res) => {
+const updateAirport = async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
@@ -51,7 +51,7 @@ const updateDestination = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Destination updated successfully",
+            message: "Airport updated successfully",
             data: updatedDestination,
         });
     } catch (error) {
@@ -66,14 +66,14 @@ const updateDestination = async (req, res) => {
 
 
 
-const deleteDestination = async (req, res) => {
+const deleteAirport = async (req, res) => {
     const { id } = req.params;
     try {
         const data = await prisma.destination.delete({ where: { id } });
 
         res.status(200).json({
             succes: true,
-            message: "Destination delete successfull",
+            message: "Airport delete successfull",
             data
         })
 
@@ -87,8 +87,8 @@ const deleteDestination = async (req, res) => {
 
 
 module.exports = {
-    createDestination,
-    getAllDestination,
-    updateDestination,
-    deleteDestination
+    createAirport,
+    getAllAirport,
+    updateAirport,
+    deleteAirport
 }
