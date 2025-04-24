@@ -49,6 +49,7 @@ const getAllAirport = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Airport fetch successful",
+            total: data?.length,
             data,
         });
 
