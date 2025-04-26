@@ -18,6 +18,54 @@ const createTourPackage = async (req, res) => {
 }
 
 
+
+
+// search tour package 
+const searchTourPackage = async (req, res) => {
+    const { } = req.params
+    try {
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
+
+
+//get all tour package
+
+const getAllTourPackage = async (req, res) => {
+    try {
+        const data = await prisma.tourPackage.findMany({
+            include: {
+                tour_location: {
+                    select: {
+                        format: true,
+                        airportCode: true
+                    }
+                },
+                
+            }
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "All Tour package get successfully",
+            data,
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error"
+        })
+    }
+}
+
 module.exports = {
-    createTourPackage
+    createTourPackage,
+    searchTourPackage,
+    getAllTourPackage
 }
