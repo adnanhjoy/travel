@@ -24,6 +24,7 @@ model Airport {
   airportCode String
   format      String
   packages    Package[]
+  TourPackage TourPackage[]
 }
 
 model Package {
@@ -34,6 +35,20 @@ model Package {
   destination   Airport   @relation(fields: [destinationId], references: [id])
   destinationId String
   bookings      Booking[]
+}
+
+model TourPackage {
+  id                      String  @id @default(uuid())
+  name                    String
+  tour_location           Airport   @relation(fields: [locationId], references: [id])
+  locationId              String
+  featured_picture        String
+  duration                Float
+  minimum_availability    String
+  maximum_availability    String
+  starting_price          Int
+  region                  String
+  currency                String
 }
 
 model Booking {
