@@ -22,8 +22,20 @@ const createTourPackage = async (req, res) => {
 
 // search tour package 
 const searchTourPackage = async (req, res) => {
-    const { } = req.params
+    const { arrival } = req.body
     try {
+        const data = await prisma.tourPackage.findMany({
+            where: {
+              tour_location: {
+                airportCode: arrival
+              }
+            }
+          });
+        res.status(200).json({
+            success: true,
+            message: "Search Result successfull",
+            data: data
+        })
 
     } catch (error) {
         res.status(500).json({
@@ -47,7 +59,7 @@ const getAllTourPackage = async (req, res) => {
                         airportCode: true
                     }
                 },
-                
+
             }
         })
 
