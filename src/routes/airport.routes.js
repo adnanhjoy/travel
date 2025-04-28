@@ -1,11 +1,12 @@
 const express = require('express');
 const { createAirport, getAllAirport, updateAirport, deleteAirport } = require('../controllers/airport.controller');
+const authGuard = require('../middleware/auth');
 const router = express.Router();
 
 
-router.post('/', createAirport);
+router.post('/', authGuard, createAirport);
 router.get('/', getAllAirport);
-router.put('/:id', updateAirport);
-router.delete('/:id', deleteAirport)
+router.put('/:id', authGuard, updateAirport);
+router.delete('/:id', authGuard, deleteAirport)
 
 module.exports = router
