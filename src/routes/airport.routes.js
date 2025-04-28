@@ -4,9 +4,9 @@ const authGuard = require('../middleware/auth');
 const router = express.Router();
 
 
-router.post('/', authGuard, createAirport);
+router.post('/', authGuard(['admin']), createAirport);
 router.get('/', getAllAirport);
-router.put('/:id', authGuard, updateAirport);
-router.delete('/:id', authGuard, deleteAirport)
+router.put('/:id', authGuard(['admin']), updateAirport);
+router.delete('/:id', authGuard(['admin']), deleteAirport)
 
 module.exports = router

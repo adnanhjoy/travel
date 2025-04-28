@@ -4,7 +4,7 @@ const { createBooking, getAllBooking, getBookingByUser } = require('../controlle
 const router = express.Router();
 
 router.post('/', authGuard, createBooking);
-router.get('/', authGuard, getAllBooking);
-router.get('/list', authGuard, getBookingByUser)
+router.get('/', authGuard(['admin', 'user']), getAllBooking);
+router.get('/list', authGuard(['admin', 'user']), getBookingByUser)
 
 module.exports = router

@@ -4,7 +4,7 @@ const authGuard = require('../middleware/auth');
 const router = express.Router();
 
 
-router.post('/', authGuard, createTourPackage);
+router.post('/', authGuard(['admin']), createTourPackage);
 router.post('/search', searchTourPackage);
 router.get('/', getAllTourPackage)
 
