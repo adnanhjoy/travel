@@ -1,16 +1,41 @@
 const jwt = require('jsonwebtoken');
 
-const authGuard = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth) return res.status(401).json({ message: 'No token' });
+const authGuard = (allowedRoles = []) => {
+  return (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
 
-  try {
-    const decoded = jwt.verify(auth.split(' ')[1], process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch {
-    res.status(401).json({ message: 'Invalid token' });
-  }
+    try {
+      const token = authHeader.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+
+      if (allowedRoles.length === 0) {
+        return next();
+      }
+
+      if (req.user.role === 'admin') {
+        return next();
+      }
+
+      if (!allowedRoles.includes(req.user.role)) {
+        return res.status(403).json({ message: 'Access Denied: Role not allowed' });
+      }
+
+      const requestedUserId = req.params.email || req.body.email;
+
+      if (requestedUserId && requestedUserId !== req.user.email) {
+        return res.status(403).json({ message: 'Access Denied: Token does not match your identity' });
+      }
+
+      next();
+    } catch (error) {
+      console.error('JWT error:', error.message);
+      return res.status(401).json({ message: 'Unauthorized: Invalid or expired token' });
+    }
+  };
 };
 
-module.exports = authGuard
+module.exports = authGuard;
