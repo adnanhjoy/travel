@@ -22,15 +22,25 @@ const createTourPackage = async (req, res) => {
 
 // search tour package 
 const searchTourPackage = async (req, res) => {
-    const { arrival } = req.body
+    const { tour_location } = req.body
     try {
         const data = await prisma.tourPackage.findMany({
             where: {
-              tour_location: {
-                airportCode: arrival
-              }
+                tour_location: {
+                    city_location: tour_location
+                }
+            },
+            include: {
+                tour_location: {
+                    select: {
+                        countryName: true,
+                        countryCode: true,
+                        city_location: true
+                    }
+                },
+
             }
-          });
+        });
         res.status(200).json({
             success: true,
             message: "Search Result successfull",
@@ -55,8 +65,9 @@ const getAllTourPackage = async (req, res) => {
             include: {
                 tour_location: {
                     select: {
-                        format: true,
-                        airportCode: true
+                        countryName: true,
+                        countryCode: true,
+                        city_location: true
                     }
                 },
 
