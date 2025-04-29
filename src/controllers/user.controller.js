@@ -93,9 +93,9 @@ const allUser = async (req, res) => {
             data: user
         });
     } catch (error) {
-        res.status(200).json({
+        res.status(500).json({
             success: false,
-            message: "User not found",
+            message: "There was a server side error",
         });
     }
 }
@@ -121,9 +121,43 @@ const singleUser = async (req, res) => {
             data: user
         });
     } catch (error) {
-        res.status(200).json({
+        res.status(500).json({
             success: false,
-            message: "User not found",
+            message: "There was a server side error",
+        });
+    }
+}
+
+
+
+const updateUser = async (req, res) => {
+    const { emailId } = req.params;
+    const { email } = req.body;
+    try {
+
+        if (email) {
+            res.status(403).json({
+                success: false,
+                message: "You cannot change your email address.",
+            });
+        }
+
+
+        const data = await prisma.user.update({
+            where: { email: emailId },
+            data: req.body
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User Update Successfull",
+            data
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "There was a server side error",
         });
     }
 }
@@ -132,5 +166,6 @@ module.exports = {
     register,
     login,
     allUser,
-    singleUser
+    singleUser,
+    updateUser
 }

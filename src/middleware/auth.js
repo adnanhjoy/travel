@@ -24,7 +24,7 @@ const authGuard = (allowedRoles = []) => {
         return res.status(403).json({ message: 'Access Denied: Role not allowed' });
       }
 
-      const requestedUserId = req.params.email || req.body.email;
+      const requestedUserId = req.params.email;
 
       if (requestedUserId && requestedUserId !== req.user.email) {
         return res.status(403).json({ message: 'Access Denied: Token does not match your identity' });
